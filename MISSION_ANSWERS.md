@@ -195,9 +195,16 @@ Total messages: 10
 
 ## Part 3: Cloud Deployment
 
-### Exercise 3.1: Public Deployment (`06-lab-complete/`)
-- **Platform:** Render / Railway
-- **Public URL:** `[PENDING_PUBLIC_URL]` (xem chi tiết lệnh kiểm thử trong [DEPLOYMENT.md](DEPLOYMENT.md))
+### Exercise 3.1 / 3.2: Public Deployment (`06-lab-complete/`)
+- **Platform:** Render (Docker Web Service + Render Key Value Redis via Blueprint)
+- **Public URL:** https://k5-day14-khanh-agent.onrender.com (xem chi tiết lệnh kiểm thử trong [DEPLOYMENT.md](DEPLOYMENT.md))
+- **Kết quả kiểm thử 4 lệnh tự kiểm tra CP6:**
+  ```text
+  1. GET /health       -> 200
+  2. GET /ready        -> 200
+  3. POST /ask (no key)-> 401
+  4. POST /ask (valid) -> 200
+  ```
 - **Screenshots:**
   - Dashboard: `screenshots/dashboard.png`
   - Service running: `screenshots/running.png`

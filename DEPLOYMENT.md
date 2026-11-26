@@ -1,15 +1,15 @@
 # Deployment Information
 
 ## Public URL
-https://<YOUR-DEPLOYED-DOMAIN>
+https://k5-day14-khanh-agent.onrender.com
 
 ## Platform
-Railway / Render (`06-lab-complete/`)
+Render (Docker Web Service + Render Key Value / Redis via Blueprint `render.yaml`, `rootDir: 06-lab-complete`)
 
 ## Test Commands (CP6 Verification)
 
 ```bash
-BASE="https://<YOUR-DEPLOYED-DOMAIN>"
+BASE="https://k5-day14-khanh-agent.onrender.com"
 AGENT_API_KEY="<YOUR-SECRET-API-KEY>"
 
 # 1. Liveness probe -> Expected: 200
@@ -31,10 +31,10 @@ curl -sS -o /dev/null -w '%{http_code}\n' -X POST "$BASE/ask" \
 ```
 
 ## Environment Variables Set
-- `PORT` (injected automatically by platform, default `8000`)
+- `PORT` (injected automatically by Render, default `8000`)
 - `ENVIRONMENT=production`
-- `AGENT_API_KEY` (set via platform secret variables, never hardcoded)
-- `REDIS_URL` (pointing to managed Redis instance on platform)
+- `AGENT_API_KEY` (generated securely on Render via `generateValue: true`, never hardcoded)
+- `REDIS_URL` (auto-linked internal connection string from `k5-day14-khanh-redis`)
 - `RATE_LIMIT_PER_MINUTE=10`
 - `DAILY_BUDGET_USD=1.0`
 
