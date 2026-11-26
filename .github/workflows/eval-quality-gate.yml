@@ -1,0 +1,34 @@
+name: Eval Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  eval-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: 06-lab-complete/benchmark-observability/develop
+        run: pip install -r requirements.txt
+
+      - name: Run agent v2 and enforce quality gate (accuracy >= 100%, no regression)
+        working-directory: 06-lab-complete/benchmark-observability/develop
+        run: |
+          AGENT_VERSION=v2 PORT=8002 MOCK_ERROR_RATE=0 python app.py &
+          AGENT_PID=$!
+          for i in $(seq 1 20); do
+            curl -sf http://127.0.0.1:8002/health && break
+            sleep 0.5
+          done
+          python eval/run_eval.py \
+            --url http://127.0.0.1:8002 \
+            --min-accuracy 1.0 \
+            --baseline ../../../reports/eval_v2.json
+          kill $AGENT_PID || true
